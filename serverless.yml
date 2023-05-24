@@ -1,0 +1,40 @@
+app: sav
+org: keykolor
+service: <new service>
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  versionFunctions: false
+  stage: dev
+  timeout: 30 # optional, in seconds, default is 6
+  environment:
+    ### COMUNES ###
+    REGION: ${self:provider.region}
+    STAGE: ${self:provider.stage}
+    DATE_FORMAT: MM/DD/YYYY HH:mm:ss
+    LEVEL_LOGS: DEBUG
+    MONGO_URI: mongodb+srv://development:6cQOfE1DPBkP8WDF@sav-dev.5xf4o.mongodb.net/sav-dev?retryWrites=true&w=majority
+    SECRET_JWT: Q29pbkNsb3VkU2VjcmV0Rm9ySldU
+
+custom:
+  base: ${self:org}-${self:app}-${self:service}-${self:provider.stage}
+
+plugins:
+  - serverless-offline
+
+functions:
+  # categories-create:
+  #   name: ${self:custom.base}-categories-create
+  #   handler: ./src/handlers/categories-create/categories-create.create
+  #   events:
+  #     - http:
+  #         path: categories/categories
+  #         method: POST
+  #         cors: true
+          # authorizer: 
+          #   type: "CUSTOM"
+          #   authorizerId: ${output:${self:custom.api}.JWTAuth}
